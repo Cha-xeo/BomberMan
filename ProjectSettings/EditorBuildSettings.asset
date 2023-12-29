@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Scenes/Start.unity
+    guid: 64080d98d4a7bf441870b16d2b25ae81
+  - enabled: 1
+    path: Assets/Scenes/Mirror/MainMenuScene.unity
+    guid: 39e8c78646e2cd04e9742488e8d2dab1
+  - enabled: 1
+    path: Assets/Scenes/Mirror/GameRoom.unity
+    guid: 1e74b0bee1e827c4d84e6377b8a82ee1
+  - enabled: 1
+    path: Assets/Scenes/Mirror/Gameplay.unity
+    guid: ae384c09855a6cd46897952853f79125
   m_configObjects: {}
