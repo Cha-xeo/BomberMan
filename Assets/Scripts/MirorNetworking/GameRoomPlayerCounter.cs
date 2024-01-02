@@ -48,8 +48,18 @@ namespace Assets.Scripts.Room
             }
             _roomPlayerList.Clear();
 
-            // Update List
+            // ### Update List ### //
             Array.Reverse(players);
+            
+            // Get used icons
+            List<int> usedIdx = new List<int>();
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].GetIcon() != -1)
+                    usedIdx.Add(players[i].GetIcon());
+            }
+
+            // Update display
             for (int i = 0; i < players.Length; i++)
             {
                 GameObject newRoomPlayer = Instantiate(roomPlayerPrefab, roomPlayerListTransform);
@@ -58,14 +68,13 @@ namespace Assets.Scripts.Room
                 if (players[i].GetIcon() != -1)
                     newRoomPlayer.GetComponent<IconRandomizer>().SetSpriteByIdx(players[i].GetIcon());
                 else {
-                    newRoomPlayer.GetComponent<IconRandomizer>().ChooseRandomIcon();
+                    newRoomPlayer.GetComponent<IconRandomizer>().ChooseRandomIcon(usedIdx);
                     players[i].SetIcon(newRoomPlayer.GetComponent<IconRandomizer>().GetSpriteIdx());
                 }
 
                 // Player Idx
                 newRoomPlayer.transform.GetChild(1).GetComponent<Text>().text = $"Player {i + 1}";
 
-                //newRoomPlayer.transform.GetChild(1).GetComponent<Image>().sprite = players[i].GetIcon();
                 _roomPlayerList.Add(newRoomPlayer);
 
             }
