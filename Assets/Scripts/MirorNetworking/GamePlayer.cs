@@ -1,11 +1,7 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Interface;
+﻿using Assets.Scripts.Interface;
 using Mirror;
-using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using static UnityEngine.Rendering.DebugUI;
 public class GamePlayer : NetworkBehaviour, IDamageable
 {
     [SerializeField] TextMeshProUGUI _healthBar;
@@ -15,6 +11,7 @@ public class GamePlayer : NetworkBehaviour, IDamageable
         get => _health;
         set
         {
+            Debug.Log("Player hp set to: " + value);
             // TODO clamp to hp max, check for overhealth
             _healthBar.text = "hp: " + value.ToString();
             _health = value;
@@ -34,7 +31,7 @@ public class GamePlayer : NetworkBehaviour, IDamageable
     [ServerCallback]
     public void Damage(int amount)
     {
-        _health -= amount;
+        Health -= amount;
     }
 
 }

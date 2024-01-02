@@ -1,8 +1,12 @@
 ﻿using Assets.Scripts.Bomb;
+using Assets.Scripts.Interface;
 using Mirror;
 using Mirror.Examples.BenchmarkIdle;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
+using static UnityEditor.Progress;
 
 namespace Assets.Scripts.Players
 {
@@ -38,7 +42,18 @@ namespace Assets.Scripts.Players
         {
             if (_bombPrefab)
             {
-                GameObject Bomb = Instantiate(_bombPrefab, _thisTranform.position, Quaternion.identity, _bombHolder);
+                Vector3 tmp = _thisTranform.position;
+
+                Collider2D[] cols = Physics2D.OverlapPointAll(_thisTranform.position);
+                foreach (Collider2D col in cols)
+                {
+                    if (col.gameObject.TryGetComponent(out UnderGrid grid))
+                    {
+                        tmp = grid.transform.position;
+                    }
+                }
+
+                GameObject Bomb = Instantiate(_bombPrefab, tmp, Quaternion.identity, _bombHolder);
                 Debug.Log(" Bomb Range: " + _bombRange + " Bomb timer: " + _bombTimer + " Bomb atk: " + _bombAttack);
                 Bomb.GetComponent<Bombs>().Init(_bombRange, _bombTimer, _bombAttack);
                 NetworkServer.Spawn(Bomb);

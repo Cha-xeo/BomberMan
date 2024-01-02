@@ -79,8 +79,10 @@ namespace Assets.Scripts.Bomb
                 Collider2D[] cols = Physics2D.OverlapPointAll(item);
                 foreach (Collider2D col in cols)
                 {
-                    Debug.Log("col: " + col.gameObject.tag);
-                    col.transform.GetComponent<UnderGrid>().PlayExplosion();
+                    if (col.gameObject.TryGetComponent(out UnderGrid grid))
+                    {
+                        grid.PlayExplosion();
+                    }
                 }
             }
         }
