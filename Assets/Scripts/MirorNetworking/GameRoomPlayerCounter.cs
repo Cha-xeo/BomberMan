@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Mirror;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Room
 {
@@ -11,9 +12,20 @@ namespace Assets.Scripts.Room
         [SyncVar] int _Timer = 8;
         [SerializeField] TMPro.TextMeshProUGUI _playerCountText;
         [SerializeField] TMPro.TextMeshProUGUI _timerText;
+
+        [Header("UI")]
+        // Player List
+        public Transform roomPlayerListTransform;
+        public GameObject roomPlayerPrefab;
+        List<GameObject> _roomPlayerList = new List<GameObject>();
+
         public void UpdatePlayerCount()
         {
             var players = FindObjectsOfType<RoomPlayer>();
+
+            // Update UI
+            UpdatePlayerList(players);
+
             bool canStart = players.Length >= _minPlayer;
             _playerCountText.color = canStart ? Color.black : Color.red;
             _playerCountText.text = string.Format("{0}:{1}", players.Length, _maxPlayer);
@@ -21,6 +33,24 @@ namespace Assets.Scripts.Room
             {
                 StartCoroutine(StartCountDown());
                 // start countdown
+            }
+        }
+
+        // Update the display according to the number of players in the room
+        void UpdatePlayerList(RoomPlayer[] players)
+        {
+            // Clear List
+            foreach (var player in _roomPlayerList)
+            {
+                Destroy(player.gameObject);
+            }
+            _roomPlayerList.Clear();
+
+            // Update List
+            for (int i = 0; i < players.Length; i++)
+            {
+                GameObject newRoomPlayer = Instantiate(roomPlayerPrefab, roomPlayerListTransform);
+                _roomPlayerList.Add(newRoomPlayer);
             }
         }
 
