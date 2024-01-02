@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
@@ -48,22 +49,21 @@ namespace Assets.Scripts.Room
             _roomPlayerList.Clear();
 
             // Update List
+            Array.Reverse(players);
             for (int i = 0; i < players.Length; i++)
             {
                 GameObject newRoomPlayer = Instantiate(roomPlayerPrefab, roomPlayerListTransform);
 
                 // Sync Icon
-                //if (players[i].GetIcon() != -1) newRoomPlayer.GetComponent<IconRandomizer>().SetSpriteByIdx(players[i].GetIcon());
-                //else players[i].SetIcon(newRoomPlayer.GetComponent<IconRandomizer>().GetSpriteIdx());
-                Debug.Log($"Player {i}");
-                Debug.Log($"Icon before: {players[i].GetIcon()}");
                 if (players[i].GetIcon() != -1)
                     newRoomPlayer.GetComponent<IconRandomizer>().SetSpriteByIdx(players[i].GetIcon());
                 else {
                     newRoomPlayer.GetComponent<IconRandomizer>().ChooseRandomIcon();
                     players[i].SetIcon(newRoomPlayer.GetComponent<IconRandomizer>().GetSpriteIdx());
                 }
-                Debug.Log($"Icon after: {players[i].GetIcon()}");
+
+                // Player Idx
+                newRoomPlayer.transform.GetChild(1).GetComponent<Text>().text = $"Player {i + 1}";
 
                 //newRoomPlayer.transform.GetChild(1).GetComponent<Image>().sprite = players[i].GetIcon();
                 _roomPlayerList.Add(newRoomPlayer);
