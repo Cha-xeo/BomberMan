@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -50, y: -50}
+  m_SizeDelta: {x: -200, y: -200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6087525042161999173
 CanvasRenderer:
@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d7b374e2384f2ef4dae12f82e2540a71, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -84,6 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4188446045504719837}
+  - component: {fileID: 7189291189057004422}
   m_Layer: 5
   m_Name: RoomPlayerTemplate
   m_TagString: Untagged
@@ -107,11 +108,43 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 376, y: -540}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7189291189057004422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5188330467461271156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55314051dee2ecb42b3f55ba8de2035d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconList:
+  - {fileID: 21300000, guid: 781c522f9d8b2da4398d96c0adc7b5e1, type: 3}
+  - {fileID: 21300000, guid: d4412cf95e809d043b475004d884de9d, type: 3}
+  - {fileID: 21300000, guid: 0ff4b13f17e64664cb568e9c27bb00ca, type: 3}
+  - {fileID: 21300000, guid: f12108a08ca330b4592cd651f5f6dd2a, type: 3}
+  - {fileID: 21300000, guid: 3c99c50d960a86943a489680e4ea340b, type: 3}
+  - {fileID: 21300000, guid: 88421aa601237d544aa2f1c36e812831, type: 3}
+  - {fileID: 21300000, guid: 8efdf7c18ac23da4baf500b1bf3c981f, type: 3}
+  - {fileID: 21300000, guid: 75fb578f030b57c4b9326a1a37e7fc3c, type: 3}
+  - {fileID: 21300000, guid: efc45c3c0226f334cae3c6e115b3a056, type: 3}
+  - {fileID: 21300000, guid: cfdf66cf559a8544f83fc6f6edc81300, type: 3}
+  - {fileID: 21300000, guid: 7589c435280300c47b59244395bc5ead, type: 3}
+  - {fileID: 21300000, guid: 73ac0987abebf984da80784fe88b0eff, type: 3}
+  - {fileID: 21300000, guid: 56b033cded273f94faf38e4d803af05d, type: 3}
+  - {fileID: 21300000, guid: 811186c27a9c21e48bb5c05c67e3a11e, type: 3}
+  - {fileID: 21300000, guid: 7e0069568ec1eb243a06a2da3566095b, type: 3}
+  - {fileID: 21300000, guid: 9e47da35906f0be469a497887630a6bd, type: 3}
+  - {fileID: 21300000, guid: 16cdcddc4e99af149a512d016f883e0e, type: 3}
+  - {fileID: 21300000, guid: d6171eec65811304f84ffd031362ff45, type: 3}
+  - {fileID: 21300000, guid: 8bf609eefcf487b46b202ab9f9346ecc, type: 3}
 --- !u!1 &7081858866727603468
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,7 +162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &931287855013676861
 RectTransform:
   m_ObjectHideFlags: 0
@@ -170,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -2,6 +2,7 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Room
 {
@@ -50,7 +51,23 @@ namespace Assets.Scripts.Room
             for (int i = 0; i < players.Length; i++)
             {
                 GameObject newRoomPlayer = Instantiate(roomPlayerPrefab, roomPlayerListTransform);
+
+                // Sync Icon
+                //if (players[i].GetIcon() != -1) newRoomPlayer.GetComponent<IconRandomizer>().SetSpriteByIdx(players[i].GetIcon());
+                //else players[i].SetIcon(newRoomPlayer.GetComponent<IconRandomizer>().GetSpriteIdx());
+                Debug.Log($"Player {i}");
+                Debug.Log($"Icon before: {players[i].GetIcon()}");
+                if (players[i].GetIcon() != -1)
+                    newRoomPlayer.GetComponent<IconRandomizer>().SetSpriteByIdx(players[i].GetIcon());
+                else {
+                    newRoomPlayer.GetComponent<IconRandomizer>().ChooseRandomIcon();
+                    players[i].SetIcon(newRoomPlayer.GetComponent<IconRandomizer>().GetSpriteIdx());
+                }
+                Debug.Log($"Icon after: {players[i].GetIcon()}");
+
+                //newRoomPlayer.transform.GetChild(1).GetComponent<Image>().sprite = players[i].GetIcon();
                 _roomPlayerList.Add(newRoomPlayer);
+
             }
         }
 
@@ -78,7 +95,7 @@ namespace Assets.Scripts.Room
         [ClientRpc]
         public void RpcTickTimer()
         {
-            _Timer--;
+            //_Timer--;
             _timerText.text = _Timer.ToString();
         }
     }
