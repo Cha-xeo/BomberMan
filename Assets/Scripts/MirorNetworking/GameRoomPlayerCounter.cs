@@ -104,7 +104,7 @@ namespace Assets.Scripts.Room
         [ClientRpc]
         public void RpcTickTimer()
         {
-            //_Timer--;
+            _Timer--;
             _timerText.text = _Timer.ToString();
         }
     }

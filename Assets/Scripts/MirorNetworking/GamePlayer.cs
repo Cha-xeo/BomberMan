@@ -6,35 +6,42 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using static UnityEngine.Rendering.DebugUI;
-public class GamePlayer : NetworkBehaviour, IDamageable
+
+namespace Assets.Scripts.Gameplay
 {
-    [SerializeField] TextMeshProUGUI _healthBar;
-    [SerializeField] [SyncVar] int _health;
-    public int Health
+    public class GamePlayer : NetworkBehaviour, IDamageable
     {
-        get => _health;
-        set
+        [SerializeField] TextMeshProUGUI _healthBar;
+        [SerializeField][SyncVar] int _health;
+
+        public int Health
         {
-            // TODO clamp to hp max, check for overhealth
-            _healthBar.text = "hp: " + value.ToString();
-            _health = value;
-            if (value <= 0)
+            get => _health;
+            set
             {
-                Debug.LogWarning("Player death not implented");
-                //TODO death
+                // TODO clamp to hp max, check for overhealth
+                _healthBar.text = "hp: " + value.ToString();
+                _health = value;
+                if (value <= 0)
+                {
+                    Debug.LogWarning("Player death not implented");
+                    //TODO death
+                }
             }
         }
-    }
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        _healthBar.text = "hp: " + Health.ToString();
-    }
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            _healthBar.text = "hp: " + Health.ToString();
 
-    [ServerCallback]
-    public void Damage(int amount)
-    {
-        _health -= amount;
-    }
+            FindObjectsOfType<GameplayPlayerCounter>()[0].UpdatePlayerCount();
+        }
 
+        [ServerCallback]
+        public void Damage(int amount)
+        {
+            _health -= amount;
+        }
+
+    }
 }
