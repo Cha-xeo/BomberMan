@@ -21,6 +21,7 @@ namespace Assets.Scripts.Room
         public void CreateRoom()
         {
             var manager = RoomManager.singleton;
+            AplicationController.AplicationController.Instance.isServer = true;
             manager.StartHost();
         }
 

@@ -2,7 +2,6 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 public class GamePlayer : NetworkBehaviour, IDamageable
 {
     [SerializeField] TextMeshProUGUI _healthBar;

@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +16,7 @@ namespace AplicationController
     {
         public static AplicationController Instance { get; private set; }
         public bool gameIsPaused;
+        public bool isServer;
         [SerializeField] GameObject _canvasEndPanelRoots;
         [SerializeField] GameObject _winPanelRoots;
         [SerializeField] GameObject _losePanelRoots;
@@ -56,7 +54,7 @@ namespace AplicationController
             switch (next.name)
             {
                 case Constants.TAG_OFFLINE_SCENE:
-                    Debug.Log("Scene main menu");
+                    isServer = false;
                     switch (gameCondition)
                     {
                         case GameCondition.None:
@@ -82,10 +80,8 @@ namespace AplicationController
                     }
                     break;
                 case Constants.TAG_ONLINE_SCENE:
-                    Debug.Log("Scene Room");
                     break;
                 case Constants.TAG_GAMEPLAY_SCENE:
-                    Debug.Log("Scene Gameplay");
                     break;
                 default: 
                     Debug.LogWarning("Scene not present in AplicationController");
@@ -98,6 +94,11 @@ namespace AplicationController
             _canvasEndPanelRoots.SetActive(false);
         }
 
+        
+        public void quit()
+        {
+            StartCoroutine(LeaveBeforeQuit());
+        }
         private bool OnWantToQuit()
         {
             //var canQuit = string.IsNullOrEmpty(m_LocalLobby?.LobbyID);
@@ -106,7 +107,7 @@ namespace AplicationController
             {
                 StartCoroutine(LeaveBeforeQuit());
             }
-            return canQuit;
+            return true;
         }
 
         /// <summary>
@@ -115,6 +116,7 @@ namespace AplicationController
         /// </summary>
         private IEnumerator LeaveBeforeQuit()
         {
+            Debug.Log("Quitting");
             yield return null;
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

@@ -1,12 +1,6 @@
 ﻿using Assets.Scripts.Bomb;
-using Assets.Scripts.Interface;
 using Mirror;
-using Mirror.Examples.BenchmarkIdle;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using static UnityEditor.Progress;
 
 namespace Assets.Scripts.Players
 {
