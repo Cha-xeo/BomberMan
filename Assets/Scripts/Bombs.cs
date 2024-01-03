@@ -25,7 +25,6 @@ namespace Assets.Scripts.Bomb
 
         public override void OnStartServer()
         {
-            Debug.Log(" Range: " + _range + " timer: " + _duration + " atk: " + _attack);
             Invoke(nameof(Explossion), _duration);
         }
 
@@ -79,8 +78,10 @@ namespace Assets.Scripts.Bomb
                 Collider2D[] cols = Physics2D.OverlapPointAll(item);
                 foreach (Collider2D col in cols)
                 {
-                    Debug.Log("col: " + col.gameObject.tag);
-                    col.transform.GetComponent<UnderGrid>().PlayExplosion();
+                    if (col.gameObject.TryGetComponent(out UnderGrid grid))
+                    {
+                        grid.PlayExplosion();
+                    }
                 }
             }
         }

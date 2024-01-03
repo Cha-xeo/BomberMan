@@ -2672,11 +2672,11 @@ MonoBehaviour:
     deliveryTimeEmaDuration: 2
   connectionQualityInterval: 3
   timeInterpolationGui: 0
-  showRoomGUI: 1
+  showRoomGUI: 0
   minPlayers: 2
   roomPlayerPrefab: {fileID: 6961120101513713870, guid: d9186037f3c9b1540a9893d3b5ae916d, type: 3}
   RoomScene: Assets/Scenes/Mirror/GameRoom.unity
-  GameplayScene: Assets/Scenes/Mirror/Gameplay.unity
+  GameplayScene: Assets/Scenes/Mirror/Gameplay_Map.unity
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0

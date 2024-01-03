@@ -7,6 +7,7 @@ namespace Assets.Scripts
 {
     public class Walls : NetworkBehaviour, IDamageable
     {
+        [SerializeField] GameObject _underGridPrefab;
         [SerializeField] [SyncVar] int _health;
         public int Health
         {
@@ -21,6 +22,11 @@ namespace Assets.Scripts
                     //TODO death
                 }
             }
+        }
+
+        void Start()
+        {
+            Instantiate(_underGridPrefab, transform.parent);    
         }
 
         [ServerCallback]

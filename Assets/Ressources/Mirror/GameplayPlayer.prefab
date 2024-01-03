@@ -182,7 +182,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _healthBar: {fileID: 3969705753439533915}
-  _health: 3
+  _health: 1
 --- !u!212 &2666590111278264599
 SpriteRenderer:
   m_ObjectHideFlags: 0

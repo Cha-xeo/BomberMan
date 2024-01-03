@@ -1,47 +1,75 @@
-﻿using Assets.Scripts;
-using Assets.Scripts.Interface;
+﻿using Assets.Scripts.Interface;
 using Mirror;
-using System.Linq.Expressions;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
-using static UnityEngine.Rendering.DebugUI;
-
-namespace Assets.Scripts.Gameplay
+public class GamePlayer : NetworkBehaviour, IDamageable
 {
-    public class GamePlayer : NetworkBehaviour, IDamageable
+    [SerializeField] TextMeshProUGUI _healthBar;
+    [SerializeField][SyncVar(hook = nameof(UpdateHealth))] int _health;
+    public int Health
     {
-        [SerializeField] TextMeshProUGUI _healthBar;
-        [SerializeField][SyncVar] int _health;
-
-        public int Health
+        get => _health;
+        set
         {
-            get => _health;
-            set
+            // TODO clamp to hp max, check for overhealth
+            _health = value;
+            /*if (value <= 0)
             {
-                // TODO clamp to hp max, check for overhealth
-                _healthBar.text = "hp: " + value.ToString();
-                _health = value;
-                if (value <= 0)
-                {
-                    Debug.LogWarning("Player death not implented");
-                    //TODO death
-                }
-            }
+                CmdPlayerDeath();
+            }*/
         }
-        public override void OnStartClient()
+    }
+
+    public void UpdateHealth(int oldHealth, int newHealth)
+    {
+        _healthBar.text = "hp: " + newHealth.ToString();
+        if (!isLocalPlayer) return;
+        if (newHealth <= 0)
         {
-            base.OnStartClient();
-            _healthBar.text = "hp: " + Health.ToString();
-
-            FindObjectsOfType<GameplayPlayerCounter>()[0].UpdatePlayerCount();
+            CmdPlayerDeath();
         }
 
-        [ServerCallback]
-        public void Damage(int amount)
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        _healthBar.text = "hp: " + Health.ToString();
+    }
+
+
+
+    [ServerCallback]
+    public void Damage(int amount)
+    {
+        Health -= amount;
+    }
+
+    [ClientRpc]
+    public void RpcShowWinner(NetworkIdentity loser)
+    {
+        if (loser.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer)
         {
-            _health -= amount;
+            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Lost;
+        
         }
+        else
+        {
+            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Won;
+        }
+        if (isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+    }
 
+    [Command]
+    public void CmdPlayerDeath()
+    {
+        RpcShowWinner(netIdentity);
     }
 }

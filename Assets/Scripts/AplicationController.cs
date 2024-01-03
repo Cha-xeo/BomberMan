@@ -1,30 +1,28 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace AplicationController
 {
-    public enum QuitMode
-    {
-        ReturnToMenu,
-        QuitGame,
-        QuitApplication
-    }
-
-    public enum StartMode
+    public enum GameCondition
     {
         None,
-        Menu,
-        Game
+        Won,
+        Lost
     }
+
+
     public class AplicationController : MonoBehaviour
     {
         public static AplicationController Instance { get; private set; }
         public bool gameIsPaused;
-        [SerializeField] StartMode _start;
+        public bool isServer;
+        [SerializeField] GameObject _canvasEndPanelRoots;
+        [SerializeField] GameObject _winPanelRoots;
+        [SerializeField] GameObject _losePanelRoots;
 
+
+        public GameCondition gameCondition;
         void Awake()
         {
             if (Instance)
@@ -38,30 +36,69 @@ namespace AplicationController
             }
         }
 
-        public QuitMode m_QuitMode = QuitMode.QuitApplication;
 
         // Start is called before the first frame update
         void Start()
         {
             Application.wantsToQuit += OnWantToQuit;
+            SceneManager.activeSceneChanged += OnSwitchScene;
             DontDestroyOnLoad(gameObject);
             Application.targetFrameRate = 120;
-
-            switch (_start)
-            {
-                case StartMode.Menu:
-                    SceneManager.LoadScene(Constants.TAG_MENUSCENE);
-                    break;
-                case StartMode.Game:
-                    SceneManager.LoadScene(Constants.TAG_GAMESCENE);
-                    break;
-                case StartMode.None:
-                    break;
-            }
+            gameCondition = GameCondition.None;
+            SceneManager.LoadScene(Constants.TAG_OFFLINE_SCENE);
 
         }
 
+        public void OnSwitchScene(Scene current, Scene next)
+        {
+            switch (next.name)
+            {
+                case Constants.TAG_OFFLINE_SCENE:
+                    isServer = false;
+                    switch (gameCondition)
+                    {
+                        case GameCondition.None:
+                            _canvasEndPanelRoots.SetActive(false);
+                            _winPanelRoots.SetActive(false);
+                            _losePanelRoots.SetActive(false);
+                            // do nothing
+                            break;
+                        case GameCondition.Won:
+                            _canvasEndPanelRoots.SetActive(true);
+                            _winPanelRoots.SetActive(true);
+                            _losePanelRoots.SetActive(false);
+                            // show Victoty
+                            gameCondition = GameCondition.None;
+                            break;
+                        case GameCondition.Lost:
+                            _canvasEndPanelRoots.SetActive(true);
+                            _winPanelRoots.SetActive(false);
+                            _losePanelRoots.SetActive(true);
+                            // show defeat
+                            gameCondition = GameCondition.None;
+                            break;
+                    }
+                    break;
+                case Constants.TAG_ONLINE_SCENE:
+                    break;
+                case Constants.TAG_GAMEPLAY_SCENE:
+                    break;
+                default: 
+                    Debug.LogWarning("Scene not present in AplicationController");
+                    break;
+            }
+        }
 
+        public void HideEndScreen()
+        {
+            _canvasEndPanelRoots.SetActive(false);
+        }
+
+        
+        public void quit()
+        {
+            StartCoroutine(LeaveBeforeQuit());
+        }
         private bool OnWantToQuit()
         {
             //var canQuit = string.IsNullOrEmpty(m_LocalLobby?.LobbyID);
@@ -70,7 +107,7 @@ namespace AplicationController
             {
                 StartCoroutine(LeaveBeforeQuit());
             }
-            return canQuit;
+            return true;
         }
 
         /// <summary>
@@ -79,6 +116,7 @@ namespace AplicationController
         /// </summary>
         private IEnumerator LeaveBeforeQuit()
         {
+            Debug.Log("Quitting");
             yield return null;
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

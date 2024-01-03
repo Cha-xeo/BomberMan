@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Mirror/GameRoom.unity
     guid: 1e74b0bee1e827c4d84e6377b8a82ee1
   - enabled: 1
-    path: Assets/Scenes/Mirror/Gameplay.unity
-    guid: ae384c09855a6cd46897952853f79125
+    path: Assets/Scenes/Mirror/Gameplay_Map.unity
+    guid: 237c27b89dd38984d94a88d28aec51e9
   m_configObjects: {}
