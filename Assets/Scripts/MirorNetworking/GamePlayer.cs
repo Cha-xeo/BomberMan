@@ -2,74 +2,78 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
-public class GamePlayer : NetworkBehaviour, IDamageable
+
+namespace Assets.Scripts.Gameplay
 {
-    [SerializeField] TextMeshProUGUI _healthBar;
-    [SerializeField][SyncVar(hook = nameof(UpdateHealth))] int _health;
-    public int Health
+    public class GamePlayer : NetworkBehaviour, IDamageable
     {
-        get => _health;
-        set
+        [SerializeField] TextMeshProUGUI _healthBar;
+        [SerializeField][SyncVar(hook = nameof(UpdateHealth))] int _health;
+        public int Health
         {
-            // TODO clamp to hp max, check for overhealth
-            _health = value;
-            /*if (value <= 0)
+            get => _health;
+            set
+            {
+                // TODO clamp to hp max, check for overhealth
+                _health = value;
+                /*if (value <= 0)
+                {
+                    CmdPlayerDeath();
+                }*/
+            }
+        }
+
+        public void UpdateHealth(int oldHealth, int newHealth)
+        {
+            _healthBar.text = "hp: " + newHealth.ToString();
+            if (!isLocalPlayer) return;
+            if (newHealth <= 0)
             {
                 CmdPlayerDeath();
-            }*/
-        }
-    }
+            }
 
-    public void UpdateHealth(int oldHealth, int newHealth)
-    {
-        _healthBar.text = "hp: " + newHealth.ToString();
-        if (!isLocalPlayer) return;
-        if (newHealth <= 0)
+        }
+
+        public override void OnStartClient()
         {
-            CmdPlayerDeath();
+            base.OnStartClient();
+            _healthBar.text = "hp: " + Health.ToString();
         }
 
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        _healthBar.text = "hp: " + Health.ToString();
-    }
 
 
-
-    [ServerCallback]
-    public void Damage(int amount)
-    {
-        Health -= amount;
-    }
-
-    [ClientRpc]
-    public void RpcShowWinner(NetworkIdentity loser)
-    {
-        if (loser.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer)
+        [ServerCallback]
+        public void Damage(int amount)
         {
-            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Lost;
-        
+            Health -= amount;
         }
-        else
-        {
-            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Won;
-        }
-        if (isServer)
-        {
-            NetworkManager.singleton.StopHost();
-        }
-        else
-        {
-            NetworkManager.singleton.StopClient();
-        }
-    }
 
-    [Command]
-    public void CmdPlayerDeath()
-    {
-        RpcShowWinner(netIdentity);
+        [ClientRpc]
+        public void RpcShowWinner(NetworkIdentity loser)
+        {
+            if (loser.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer)
+            {
+                AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Lost;
+
+            }
+            else
+            {
+                AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Won;
+            }
+            if (isServer)
+            {
+                NetworkManager.singleton.StopHost();
+            }
+            else
+            {
+                NetworkManager.singleton.StopClient();
+            }
+        }
+
+        [Command]
+        public void CmdPlayerDeath()
+        {
+            RpcShowWinner(netIdentity);
+        }
     }
 }
