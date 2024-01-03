@@ -2,30 +2,43 @@
 using Mirror;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 public class GamePlayer : NetworkBehaviour, IDamageable
 {
     [SerializeField] TextMeshProUGUI _healthBar;
-    [SerializeField] [SyncVar] int _health;
+    [SerializeField][SyncVar(hook = nameof(UpdateHealth))] int _health;
     public int Health
     {
         get => _health;
         set
         {
-            Debug.Log("Player hp set to: " + value);
             // TODO clamp to hp max, check for overhealth
-            _healthBar.text = "hp: " + value.ToString();
             _health = value;
-            if (value <= 0)
+            /*if (value <= 0)
             {
                 CmdPlayerDeath();
-            }
+            }*/
         }
     }
+
+    public void UpdateHealth(int oldHealth, int newHealth)
+    {
+        _healthBar.text = "hp: " + newHealth.ToString();
+        if (!isLocalPlayer) return;
+        if (newHealth <= 0)
+        {
+            CmdPlayerDeath();
+        }
+
+    }
+
     public override void OnStartClient()
     {
         base.OnStartClient();
         _healthBar.text = "hp: " + Health.ToString();
     }
+
+
 
     [ServerCallback]
     public void Damage(int amount)
@@ -33,10 +46,31 @@ public class GamePlayer : NetworkBehaviour, IDamageable
         Health -= amount;
     }
 
+    [ClientRpc]
+    public void RpcShowWinner(NetworkIdentity loser)
+    {
+        if (loser.gameObject.GetComponent<NetworkIdentity>().isLocalPlayer)
+        {
+            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Lost;
+        
+        }
+        else
+        {
+            AplicationController.AplicationController.Instance.gameCondition = AplicationController.GameCondition.Won;
+        }
+        if (isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+    }
+
     [Command]
     public void CmdPlayerDeath()
     {
-
+        RpcShowWinner(netIdentity);
     }
-
 }
