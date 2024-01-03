@@ -25,7 +25,6 @@ namespace Assets.Scripts.Bomb
 
         public override void OnStartServer()
         {
-            Debug.Log(" Range: " + _range + " timer: " + _duration + " atk: " + _attack);
             Invoke(nameof(Explossion), _duration);
         }
 

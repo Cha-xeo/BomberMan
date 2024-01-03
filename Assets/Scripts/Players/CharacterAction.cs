@@ -54,7 +54,6 @@ namespace Assets.Scripts.Players
                 }
 
                 GameObject Bomb = Instantiate(_bombPrefab, tmp, Quaternion.identity, _bombHolder);
-                Debug.Log(" Bomb Range: " + _bombRange + " Bomb timer: " + _bombTimer + " Bomb atk: " + _bombAttack);
                 Bomb.GetComponent<Bombs>().Init(_bombRange, _bombTimer, _bombAttack);
                 NetworkServer.Spawn(Bomb);
 

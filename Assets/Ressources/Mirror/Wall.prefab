@@ -118,6 +118,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  _underGridPrefab: {fileID: 4245057559228906271, guid: 0d86aadc102479c4d8281f9da68e24de, type: 3}
   _health: 1
 --- !u!61 &1785065531629776788
 BoxCollider2D:

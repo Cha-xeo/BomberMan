@@ -17,8 +17,7 @@ public class GamePlayer : NetworkBehaviour, IDamageable
             _health = value;
             if (value <= 0)
             {
-                Debug.LogWarning("Player death not implented");
-                //TODO death
+                CmdPlayerDeath();
             }
         }
     }
@@ -32,6 +31,12 @@ public class GamePlayer : NetworkBehaviour, IDamageable
     public void Damage(int amount)
     {
         Health -= amount;
+    }
+
+    [Command]
+    public void CmdPlayerDeath()
+    {
+
     }
 
 }
