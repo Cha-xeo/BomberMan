@@ -38,6 +38,7 @@ namespace Assets.Scripts.Gameplay
         {
             base.OnStartClient();
             _healthBar.text = "hp: " + Health.ToString();
+            FindObjectsOfType<GameplayPlayerCounter>()[0].UpdatePlayerCount();
         }
 
 
